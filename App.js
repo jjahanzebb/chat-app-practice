@@ -10,6 +10,8 @@ import React, {Component} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
 import HomeScreen from './screens/HomeScreen';
 
 const Stack = createNativeStackNavigator();
@@ -19,32 +21,23 @@ import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const Drawer = createDrawerNavigator();
 
-function MyDrawer() {
+const globalScreenOptions = {
+  headerStyle: {backgroundColor: '#2C6BED'},
+  headerTitleStyle: {color: '#ffffff'},
+  headerTintColor: '#ffffff',
+  headerTitleAlign: 'center',
+};
+
+export default function App() {
   return (
-    <Drawer.Navigator initialRouteName="Home">
-      <Drawer.Screen name="Home" component={HomeScreen} />
-    </Drawer.Navigator>
+    <GestureHandlerRootView style={{flex: 1}}>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={globalScreenOptions}>
+          <Stack.Screen name="Login" component={LoginScreen} />
+          <Stack.Screen name="Register" component={RegisterScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </GestureHandlerRootView>
   );
 }
-
-class App extends Component {
-  render() {
-    return (
-      <GestureHandlerRootView style={{flex: 1}}>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Drawer"
-              component={MyDrawer}
-              options={{headerShown: false}}
-            />
-
-            <Stack.Screen name="Home" component={HomeScreen} />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </GestureHandlerRootView>
-    );
-  }
-}
-
-export default App;
