@@ -12,7 +12,12 @@ import {UIManager} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 
 import Firebase from '../firebase';
-import {getAuth, createUserWithEmailAndPassword} from 'firebase/auth';
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  //   updateProfile,
+} from 'firebase/auth';
 
 const RegisterScreen = ({navigation}) => {
   const [name, setName] = useState('');
@@ -29,7 +34,7 @@ const RegisterScreen = ({navigation}) => {
   const register = () => {
     createUserWithEmailAndPassword(getAuth(Firebase.app), email, password)
       .then(authUser => {
-        authUser.user.update({
+        updateProfile(authUser.user, {
           displayName: name,
           photoURL:
             imageUrl ||

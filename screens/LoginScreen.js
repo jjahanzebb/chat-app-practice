@@ -17,6 +17,7 @@ const LoginScreen = ({navigation}) => {
 
   useEffect(() => {
     const unsubscribe = Firebase.auth.onAuthStateChanged(authUser => {
+      //   console.log('authUser login => ', authUser);
       if (authUser) {
         navigation.replace('Home');
       }
@@ -35,6 +36,7 @@ const LoginScreen = ({navigation}) => {
         behavior="padding"
         className="flex-1 h-screen items-center justify-center bg-white">
         <StatusBar style="light" backgroundColor="#2C6BED" />
+
         <View className="items-center">
           <Image
             source={require('../assets/signal-logo.png')}

@@ -1,67 +1,48 @@
-import React, {Component} from 'react';
-import {View, Text, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  TouchableOpacity,
+} from 'react-native';
+import React, {useLayoutEffect} from 'react';
+import CustomListItem from '../components/CustomListItem';
+import {Avatar} from '@rneui/themed';
 
-import {connect} from 'react-redux';
-import {changeCount} from '../redux/actions/counts';
-import {bindActionCreators} from 'redux';
+import Firebase from '../firebase';
 
-class HomeScreen extends Component {
-  decrementCount() {
-    let {count, actions} = this.props;
-    count--;
-    actions.changeCount(count);
-  }
-  incrementCount() {
-    let {count, actions} = this.props;
-    count++;
-    actions.changeCount(count);
-  }
-  render() {
-    const {count} = this.props;
-    return (
-      <View className="h-screen justify-center bg-emerald-50">
-        <TouchableOpacity
-          title="increment"
-          onPress={() => this.incrementCount()}
-          // style={styles.btn}
-          className="w-max py-5 bg-mygreen shadow-trueGray-600 rounded-xl m-5 justify-center items-center">
-          <Text
-            // style={styles.btnTxt}
-            className="text-lg font-bold text-amber-50">
-            Increment
-          </Text>
-        </TouchableOpacity>
+const HomeScreen = ({navigation}) => {
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Chatapp',
+      headerStyle: {backgroundColor: '#ffffff'},
+      headerTitleStyle: {color: '#2C6BED'},
+      headerLeft: () => (
+        <View className="m-2">
+          <TouchableOpacity>
+            <Avatar
+              rounded
+              source={{uri: Firebase.auth?.currentUser?.photoURL}}
+            />
+          </TouchableOpacity>
+        </View>
+      ),
+    });
+  }, []);
 
-        <Text
-          // style={styles.txt}
-          className="text-2xl py-5 text-center bg-slate-200 mx-5 rounded-xl shadow-slate-50">
-          {JSON.stringify(count)}
-        </Text>
+  return (
+    <SafeAreaView>
+      <StatusBar style="dark" backgroundColor="#ffffff" />
 
-        <TouchableOpacity
-          title="decrement"
-          onPress={() => this.decrementCount()}
-          // style={styles.btn}
-          className="w-max py-5 bg-mygreen shadow-trueGray-600 rounded-xl m-5 justify-center items-center">
-          <Text
-            // style={styles.btnTxt}
-            className="text-lg font-bold text-amber-50">
-            Decrement
-          </Text>
-        </TouchableOpacity>
-      </View>
-    );
-  }
-}
+      <ScrollView>
+        <CustomListItem />
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
 
-const mapStateToProps = state => ({
-  count: state.count.count,
-});
+export default HomeScreen;
 
-const ActionCreators = Object.assign({}, {changeCount});
-
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(ActionCreators, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(HomeScreen);
+const styles = StyleSheet.create({});
