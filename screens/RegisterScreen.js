@@ -16,7 +16,6 @@ import {
   getAuth,
   createUserWithEmailAndPassword,
   updateProfile,
-  //   updateProfile,
 } from 'firebase/auth';
 
 const RegisterScreen = ({navigation}) => {
@@ -49,7 +48,7 @@ const RegisterScreen = ({navigation}) => {
       <KeyboardAvoidingView
         behavior="padding"
         className="flex-1 h-screen items-center justify-center bg-white -mb-10">
-        <StatusBar style="light" backgroundColor="#2C6BED" />
+        <StatusBar backgroundColor="#2C6BED" barStyle="light-content" />
 
         <View className="items-center mb-6">
           <Image

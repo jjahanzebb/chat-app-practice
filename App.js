@@ -10,16 +10,17 @@ import React, {Component} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
-import LoginScreen from './screens/LoginScreen';
-import RegisterScreen from './screens/RegisterScreen';
-import HomeScreen from './screens/HomeScreen';
-
 const Stack = createNativeStackNavigator();
 
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
 const Drawer = createDrawerNavigator();
+
+import LoginScreen from './screens/LoginScreen';
+import RegisterScreen from './screens/RegisterScreen';
+import HomeScreen from './screens/HomeScreen';
+import AddChatScreen from './screens/AddChatScreen';
 
 const globalScreenOptions = {
   headerStyle: {backgroundColor: '#2C6BED'},
@@ -36,6 +37,7 @@ export default function App() {
           <Stack.Screen name="Login" component={LoginScreen} />
           <Stack.Screen name="Register" component={RegisterScreen} />
           <Stack.Screen name="Home" component={HomeScreen} />
+          <Stack.Screen name="AddChat" component={AddChatScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </GestureHandlerRootView>

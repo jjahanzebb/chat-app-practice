@@ -4,12 +4,14 @@ import {
   StyleSheet,
   Text,
   View,
+  Alert,
 } from 'react-native';
 import {Button, Input, Image} from '@rneui/themed';
 import React, {useEffect, useState} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 
 import Firebase from '../firebase';
+import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
@@ -28,14 +30,18 @@ const LoginScreen = ({navigation}) => {
     };
   }, []);
 
-  const signIn = () => {};
+  const signIn = () => {
+    signInWithEmailAndPassword(getAuth(Firebase.app), email, password).catch(
+      error => Alert.alert(error),
+    );
+  };
 
   return (
     <ScrollView>
       <KeyboardAvoidingView
         behavior="padding"
         className="flex-1 h-screen items-center justify-center bg-white">
-        <StatusBar style="light" backgroundColor="#2C6BED" />
+        <StatusBar backgroundColor="#2C6BED" barStyle="light-content" />
 
         <View className="items-center">
           <Image
@@ -61,6 +67,7 @@ const LoginScreen = ({navigation}) => {
             type="password"
             value={password}
             onChangeText={text => setPassword(text)}
+            onSubmitEditing={signIn}
             secureTextEntry
           />
         </View>
