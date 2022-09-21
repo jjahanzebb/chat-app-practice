@@ -11,12 +11,7 @@ import {Image, Button, Input, Text} from '@rneui/themed';
 import {UIManager} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 
-import Firebase from '../firebase';
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  updateProfile,
-} from 'firebase/auth';
+import {auth, db} from '../firebase';
 
 const RegisterScreen = ({navigation}) => {
   const [name, setName] = useState('');
@@ -31,16 +26,17 @@ const RegisterScreen = ({navigation}) => {
   }, [navigation]);
 
   const register = () => {
-    createUserWithEmailAndPassword(getAuth(Firebase.app), email, password)
+    auth
+      .createUserWithEmailAndPassword(email, password)
       .then(authUser => {
-        updateProfile(authUser.user, {
+        authUser.user.updateProfile({
           displayName: name,
           photoURL:
             imageUrl ||
             'https://w7.pngwing.com/pngs/754/2/png-transparent-samsung-galaxy-a8-a8-user-login-telephone-avatar-pawn-blue-angle-sphere-thumbnail.png',
         });
       })
-      .catch(error => Alert.alert(error.message));
+      .catch(error => alert(error.message));
   };
 
   return (

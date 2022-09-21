@@ -2,14 +2,8 @@ import {Alert, StatusBar, StyleSheet, Text, View} from 'react-native';
 import React, {useLayoutEffect, useState} from 'react';
 import {Button, Input} from '@rneui/themed';
 import Icon from 'react-native-vector-icons/Entypo';
-import Firebase from '../firebase';
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  doc,
-  setDoc,
-} from 'firebase/firestore';
+
+import {db} from '../firebase';
 
 const AddChatScreen = ({navigation}) => {
   const [input, setInput] = useState('');
@@ -21,30 +15,26 @@ const AddChatScreen = ({navigation}) => {
   }, [navigation]);
 
   const createChat = async () => {
-    const db = getFirestore(Firebase.app);
-    const dbRef = collection(db, 'chats');
-
-    await addDoc(
-      dbRef,
-      {
-        chatName: 'input',
-      },
-      {merge: true},
-    )
-      .then(docRef => {
+    await db
+      .collection('chats')
+      .add({
+        chatName: input,
+      })
+      .then(() => {
         navigation.goBack();
       })
       .catch(error => Alert.alert(error));
   };
 
   return (
-    <View className="">
+    <View className="bg-white p-6 h-full">
       <StatusBar backgroundColor="#2C6BED" barStyle="light-content" />
 
       <Input
         placeholder="Enter a chat name.."
         value={input}
         onChangeText={text => setInput(text)}
+        onSubmitEditing={createChat}
         leftIcon={<Icon name="chat" size={20} color="#000000" />}
       />
 

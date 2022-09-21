@@ -14,18 +14,19 @@ import {Avatar} from '@rneui/themed';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import SimpleLineIcons from 'react-native-vector-icons/SimpleLineIcons';
 
-import {auth, db} from '../firebase';
+import Firebase from '../firebase copy';
+import {getAuth, signOut} from 'firebase/auth';
+import {onSnapshot, collection, doc} from 'firebase/firestore';
 
 const HomeScreen = ({navigation}) => {
   const [chats, setChats] = useState([]);
-  const chatsRef = db.collection('chats');
 
   const signOutUser = () => {
     const outcheck = Alert.alert('Sign Out', 'Do you want to sign out?', [
       {
         text: 'Yes',
         onPress: () => {
-          auth.signOut().then(() => {
+          signOut(getAuth(Firebase.app)).then(() => {
             navigation.replace('Login');
           });
         },
@@ -38,19 +39,19 @@ const HomeScreen = ({navigation}) => {
   };
 
   useEffect(() => {
-    // console.log('db => ', db);
-    // console.log('auth => ', auth);
-
-    const unsubscribe = db.collection('chats').onSnapshot(snapshot =>
-      setChats(
-        snapshot.docs.map(doc => ({
-          id: doc.id,
-          data: doc.data(),
-        })),
-      ),
+    const unsubscribe = onSnapshot(
+      collection(Firebase.db, 'chats'),
+      snapshot => {
+        snapshot.forEach(() =>
+          setChats(
+            snapshot.docs.map(doc => ({
+              id: doc.id,
+              data: doc.data(),
+            })),
+          ),
+        );
+      },
     );
-
-    // console.log('chats => ', chats);
     return unsubscribe;
   }, []);
 
@@ -62,7 +63,10 @@ const HomeScreen = ({navigation}) => {
       headerLeft: () => (
         <View className="m-2">
           <TouchableOpacity onPress={signOutUser} activeOpacity={0.5}>
-            <Avatar rounded source={{uri: auth?.currentUser?.photoURL}} />
+            <Avatar
+              rounded
+              source={{uri: Firebase.auth?.currentUser?.photoURL}}
+            />
           </TouchableOpacity>
         </View>
       ),

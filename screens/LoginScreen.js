@@ -10,16 +10,16 @@ import {Button, Input, Image} from '@rneui/themed';
 import React, {useEffect, useState} from 'react';
 import {ScrollView} from 'react-native-gesture-handler';
 
-import Firebase from '../firebase';
-import {getAuth, signInWithEmailAndPassword} from 'firebase/auth';
+import {auth} from '../firebase';
 
 const LoginScreen = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    const unsubscribe = Firebase.auth.onAuthStateChanged(authUser => {
-      //   console.log('authUser login => ', authUser);
+    // console.log('auth => ', auth);
+    const unsubscribe = auth.onAuthStateChanged(authUser => {
+      // console.log('authUser login => ', authUser);
       if (authUser) {
         navigation.replace('Home');
       }
@@ -31,9 +31,9 @@ const LoginScreen = ({navigation}) => {
   }, []);
 
   const signIn = () => {
-    signInWithEmailAndPassword(getAuth(Firebase.app), email, password).catch(
-      error => Alert.alert(error),
-    );
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .catch(error => Alert.alert(error));
   };
 
   return (

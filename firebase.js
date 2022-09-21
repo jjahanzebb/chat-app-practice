@@ -1,32 +1,30 @@
 // Import the functions you need from the SDKs you need
-import {initializeApp} from 'firebase/app';
-import {getFirestore} from 'firebase/firestore';
-import {
-  getAuth,
-  onAuthStateChanged,
-  createUserWithEmailAndPassword,
-  updateProfile,
-  signInWithEmailAndPassword,
-  signOut,
-} from 'firebase/auth';
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: 'AIzaSyAgjSJEAfrkvPFt026Zcs6-uE3yL5pQs2Y',
-  authDomain: 'chat-app-prac-9343b.firebaseapp.com',
-  projectId: 'chat-app-prac-9343b',
-  storageBucket: 'chat-app-prac-9343b.appspot.com',
-  messagingSenderId: '539154875202',
-  appId: '1:539154875202:web:078d7058efbf73dd9f3edb',
+  apiKey: 'AIzaSyD9wWbrisGpKVUd5nFb6zrwn_nhC1vbIZk',
+  authDomain: 'chat-app-adc67.firebaseapp.com',
+  projectId: 'chat-app-adc67',
+  storageBucket: 'chat-app-adc67.appspot.com',
+  messagingSenderId: '275531241623',
+  appId: '1:275531241623:web:90c37e3fce0617a6df71d2',
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+let app;
 
-const auth = getAuth(app);
+if (firebase.apps.length === 0) {
+  app = firebase.initializeApp(firebaseConfig);
+} else {
+  app = firebase.app();
+}
+const db = app.firestore();
+const auth = firebase.auth();
 
-const db = getFirestore();
-
-export default {app, auth, db};
+export {db, auth};
